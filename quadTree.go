@@ -80,3 +80,38 @@ func (qt *QuadTree) ParseToGrid() [][]int {
 	dfs(qt.Root, 0, length-1, 0, length-1)
 	return grid
 }
+
+func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
+	var nodeAdd func(*Node, *Node) *Node
+	nodeAdd = func(n1, n2 *Node) *Node {
+		if n1.IsLeaf && n2.IsLeaf {
+			return &Node{
+				Val:         n1.Val + n2.Val,
+				IsLeaf:      true,
+				TopLeft:     nil,
+				TopRight:    nil,
+				BottomLeft:  nil,
+				BottomRight: nil,
+			}
+		} else if !(n1.IsLeaf || n2.IsLeaf) {
+			return &Node{
+				Val:         0,
+				IsLeaf:      false,
+				TopLeft:     nodeAdd(n1.TopLeft, n2.TopLeft),
+				TopRight:    nodeAdd(n1.TopRight, n2.TopRight),
+				BottomLeft:  nodeAdd(n1.BottomLeft, n2.BottomLeft),
+				BottomRight: nodeAdd(n1.BottomRight, n2.BottomRight),
+			}
+		} else {
+			return &Node{
+				Val:    0,
+				IsLeaf: false,
+				//TODO
+			}
+		}
+	}
+	return &QuadTree{
+		Root:   nodeAdd(qt.Root, addend.Root),
+		Length: qt.Length,
+	}
+}
