@@ -103,10 +103,29 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 				BottomRight: nodeAdd(n1.BottomRight, n2.BottomRight),
 			}
 		} else {
+			var leafNode, nonleafNode *Node
+			if n1.IsLeaf {
+				leafNode = n1
+				nonleafNode = n2
+			} else {
+				leafNode = n2
+				nonleafNode = n1
+			}
+			virtualNode := &Node{
+				Val:         leafNode.Val,
+				IsLeaf:      true,
+				TopLeft:     nil,
+				TopRight:    nil,
+				BottomLeft:  nil,
+				BottomRight: nil,
+			}
 			return &Node{
-				Val:    0,
-				IsLeaf: false,
-				//TODO
+				Val:         0,
+				IsLeaf:      false,
+				TopLeft:     nodeAdd(nonleafNode.TopLeft, virtualNode),
+				TopRight:    nodeAdd(nonleafNode.TopRight, virtualNode),
+				BottomLeft:  nodeAdd(nonleafNode.BottomLeft, virtualNode),
+				BottomRight: nodeAdd(nonleafNode.BottomRight, virtualNode),
 			}
 		}
 	}
