@@ -14,7 +14,7 @@ type Node struct {
 	BottomRight *Node
 }
 
-func (qt *QuadTree) Constructor(matrix [][]int) *QuadTree {
+func (qt *QuadTree) Constructor(matrix *Grid) *QuadTree {
 	var dfs func([][]int, int, int) *Node
 	dfs = func(grid [][]int, leftBound, rightBound int) *Node {
 		for _, row := range grid {
@@ -35,8 +35,8 @@ func (qt *QuadTree) Constructor(matrix [][]int) *QuadTree {
 		return &Node{Val: grid[0][leftBound], IsLeaf: true}
 	}
 	return &QuadTree{
-		Root:   dfs(matrix, 0, len(matrix)),
-		Length: len(matrix),
+		Root:   dfs(matrix.Val, 0, len(matrix.Val)),
+		Length: len(matrix.Val),
 	}
 
 }
@@ -49,7 +49,7 @@ func (qt *QuadTree) Height() int {
 	return qt.Length
 }
 
-func (qt *QuadTree) ParseToGrid() [][]int {
+func (qt *QuadTree) ParseToGrid() *Grid {
 	length := qt.Length
 	grid := make([][]int, length)
 	for i := range grid {
@@ -78,7 +78,11 @@ func (qt *QuadTree) ParseToGrid() [][]int {
 		}
 	}
 	dfs(qt.Root, 0, length-1, 0, length-1)
-	return grid
+	return &Grid{
+		Val:    grid,
+		Height: length,
+		Width:  length,
+	}
 }
 
 func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {

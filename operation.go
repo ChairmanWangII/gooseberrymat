@@ -17,6 +17,6 @@ type ParseToGrid interface {
 	ParseToGrid() [][]int
 }
 
-type multipliable interface {
+type Multipliable interface {
 	multipliable() bool
 }
