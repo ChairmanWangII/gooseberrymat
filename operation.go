@@ -16,3 +16,7 @@ type Shape interface {
 type ParseToGrid interface {
 	ParseToGrid() [][]int
 }
+
+type multipliable interface {
+	multipliable() bool
+}
