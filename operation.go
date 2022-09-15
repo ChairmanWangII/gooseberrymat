@@ -18,5 +18,9 @@ type ParseToGrid interface {
 }
 
 type Multipliable interface {
-	multipliable() bool
+	Multipliable() bool
+}
+
+type IsCophenetic interface {
+	IsCophenetic() bool
 }
