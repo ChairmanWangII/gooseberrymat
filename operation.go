@@ -24,3 +24,6 @@ type Multipliable interface {
 type IsCophenetic interface {
 	IsCophenetic() bool
 }
+type Transpose interface {
+	Transpose()
+}

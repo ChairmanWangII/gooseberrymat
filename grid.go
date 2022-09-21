@@ -29,3 +29,13 @@ func (gd *Grid) IsQuadrable() bool {
 	}
 	return true
 }
+
+func (gd *Grid) Transpose() *Grid {
+	length := gd.Height
+	for i := range gd.Val {
+		for j := i + 1; j < length; j++ {
+			gd.Val[i][j], gd.Val[j][i] = gd.Val[j][i], gd.Val[i][j]
+		}
+	}
+	return gd
+}

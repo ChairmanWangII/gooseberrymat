@@ -15,3 +15,7 @@ func (dg *DiagonalMatrix) Add(addend *DiagonalMatrix) *DiagonalMatrix {
 		Val:    sum,
 	}
 }
+
+func (dg *DiagonalMatrix) Transpose() *DiagonalMatrix {
+	return dg
+}
