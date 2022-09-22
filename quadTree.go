@@ -1,27 +1,27 @@
 package gooseberrymat
 
 type QuadTree struct {
-	Root   *Node
+	Root   *QuadTreeNode
 	Length int
 }
 
-type Node struct {
+type QuadTreeNode struct {
 	Val         int
 	IsLeaf      bool
-	TopLeft     *Node
-	TopRight    *Node
-	BottomLeft  *Node
-	BottomRight *Node
+	TopLeft     *QuadTreeNode
+	TopRight    *QuadTreeNode
+	BottomLeft  *QuadTreeNode
+	BottomRight *QuadTreeNode
 }
 
 func (qt *QuadTree) Constructor(matrix *Grid) *QuadTree {
-	var dfs func([][]int, int, int) *Node
-	dfs = func(grid [][]int, leftBound, rightBound int) *Node {
+	var dfs func([][]int, int, int) *QuadTreeNode
+	dfs = func(grid [][]int, leftBound, rightBound int) *QuadTreeNode {
 		for _, row := range grid {
 			for _, v := range row[leftBound:rightBound] {
 				if v != grid[0][leftBound] {
 					rowMid, colMid := len(grid)/2, (leftBound+rightBound)/2
-					return &Node{
+					return &QuadTreeNode{
 						0,
 						false,
 						dfs(grid[:rowMid], leftBound, colMid),
@@ -32,7 +32,7 @@ func (qt *QuadTree) Constructor(matrix *Grid) *QuadTree {
 				}
 			}
 		}
-		return &Node{Val: grid[0][leftBound], IsLeaf: true}
+		return &QuadTreeNode{Val: grid[0][leftBound], IsLeaf: true}
 	}
 	return &QuadTree{
 		Root:   dfs(matrix.Val, 0, len(matrix.Val)),
@@ -63,8 +63,8 @@ func (qt *QuadTree) ParseToGrid() *Grid {
 			}
 		}
 	}
-	var dfs func(*Node, int, int, int, int)
-	dfs = func(n *Node, top, bottom, left, right int) {
+	var dfs func(*QuadTreeNode, int, int, int, int)
+	dfs = func(n *QuadTreeNode, top, bottom, left, right int) {
 		if n == nil {
 			return
 		} else if n.IsLeaf {
@@ -86,10 +86,10 @@ func (qt *QuadTree) ParseToGrid() *Grid {
 }
 
 func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
-	var nodeAdd func(*Node, *Node) *Node
-	nodeAdd = func(n1, n2 *Node) *Node {
+	var nodeAdd func(*QuadTreeNode, *QuadTreeNode) *QuadTreeNode
+	nodeAdd = func(n1, n2 *QuadTreeNode) *QuadTreeNode {
 		if n1.IsLeaf && n2.IsLeaf {
-			return &Node{
+			return &QuadTreeNode{
 				Val:         n1.Val + n2.Val,
 				IsLeaf:      true,
 				TopLeft:     nil,
@@ -98,7 +98,7 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 				BottomRight: nil,
 			}
 		} else if !(n1.IsLeaf || n2.IsLeaf) {
-			return &Node{
+			return &QuadTreeNode{
 				Val:         0,
 				IsLeaf:      false,
 				TopLeft:     nodeAdd(n1.TopLeft, n2.TopLeft),
@@ -107,7 +107,7 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 				BottomRight: nodeAdd(n1.BottomRight, n2.BottomRight),
 			}
 		} else {
-			var leafNode, nonleafNode *Node
+			var leafNode, nonleafNode *QuadTreeNode
 			if n1.IsLeaf {
 				leafNode = n1
 				nonleafNode = n2
@@ -115,7 +115,7 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 				leafNode = n2
 				nonleafNode = n1
 			}
-			virtualNode := &Node{
+			virtualNode := &QuadTreeNode{
 				Val:         leafNode.Val,
 				IsLeaf:      true,
 				TopLeft:     nil,
@@ -123,7 +123,7 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 				BottomLeft:  nil,
 				BottomRight: nil,
 			}
-			return &Node{
+			return &QuadTreeNode{
 				Val:         0,
 				IsLeaf:      false,
 				TopLeft:     nodeAdd(nonleafNode.TopLeft, virtualNode),
@@ -136,5 +136,23 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 	return &QuadTree{
 		Root:   nodeAdd(qt.Root, addend.Root),
 		Length: qt.Length,
+	}
+}
+
+func (qt *QuadTree) Transpose() *QuadTree {
+	var dfs func(*QuadTreeNode) *QuadTreeNode
+	dfs = func(qtn *QuadTreeNode) *QuadTreeNode {
+		qtn.BottomLeft, qtn.TopRight = qtn.TopRight, qtn.BottomLeft
+		if !qtn.IsLeaf {
+			dfs(qtn.BottomLeft)
+			dfs(qtn.BottomRight)
+			dfs(qtn.TopLeft)
+			dfs(qtn.TopRight)
+		}
+		return qtn
+	}
+	return &QuadTree{
+		Length: qt.Length,
+		Root:   dfs(qt.Root),
 	}
 }
