@@ -16,6 +16,7 @@ func (dg *DiagonalMatrix) Add(addend *DiagonalMatrix) *DiagonalMatrix {
 	}
 }
 
+// Shortest function in this package.
 func (dg *DiagonalMatrix) Transpose() *DiagonalMatrix {
 	return dg
 }
