@@ -60,5 +60,4 @@ func TestTransposeQuadTree(t *testing.T) {
 	res := qtt.ParseToGrid()
 	t.Log(res.Val)
 	t.Log(testGrid)
-
 }

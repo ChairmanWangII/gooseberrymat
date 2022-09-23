@@ -1,5 +1,8 @@
 package gooseberrymat
 
+// Quad tree is a structure used to represent a type of matrix
+// whose width equals to height and length is an exponential multiple of two.
+// Especially for those matrixes has lots of same data.
 type QuadTree struct {
 	Root   *QuadTreeNode
 	Length int
@@ -14,6 +17,7 @@ type QuadTreeNode struct {
 	BottomRight *QuadTreeNode
 }
 
+// As usual, in this package, Constructor is how a grid matrix parse to this data type.
 func (qt *QuadTree) Constructor(matrix *Grid) *QuadTree {
 	var dfs func([][]int, int, int) *QuadTreeNode
 	dfs = func(grid [][]int, leftBound, rightBound int) *QuadTreeNode {
@@ -85,6 +89,7 @@ func (qt *QuadTree) ParseToGrid() *Grid {
 	}
 }
 
+// The add operation for quad tree is a bit more complex than AND or OR operation.
 func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 	var nodeAdd func(*QuadTreeNode, *QuadTreeNode) *QuadTreeNode
 	nodeAdd = func(n1, n2 *QuadTreeNode) *QuadTreeNode {
@@ -139,6 +144,7 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 	}
 }
 
+// For quad tree, Transpose operation is easier using DFS.
 func (qt *QuadTree) Transpose() *QuadTree {
 	var dfs func(*QuadTreeNode) *QuadTreeNode
 	dfs = func(qtn *QuadTreeNode) *QuadTreeNode {
