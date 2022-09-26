@@ -39,3 +39,25 @@ func (gd *Grid) Transpose() *Grid {
 	}
 	return gd
 }
+
+// Judge if two matrixes are cophenetic.
+func (gd *Grid) IsCophenetic(grid *Grid) bool {
+	if gd.Height == grid.Height && gd.Width == grid.Width {
+		return true
+	}
+	return false
+}
+
+func (gd *Grid) Add(addend *Grid) *Grid {
+	res := &Grid{
+		Width:  gd.Width,
+		Height: gd.Height,
+		Val:    gd.Val,
+	}
+	for i := 0; i < gd.Height; i++ {
+		for j := 0; j < gd.Width; j++ {
+			res.Val[i][j] += addend.Val[i][j]
+		}
+	}
+	return res
+}

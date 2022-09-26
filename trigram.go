@@ -27,10 +27,9 @@ func (tg *Trigram) Constructor(gd *Grid) *Trigram {
 
 // TODO need reconstrct
 func (tg *Trigram) ParseToGrid() *Grid {
-	line := make([]int, tg.Width)
 	gd := make([][]int, 0)
 	for i := 0; i < tg.Height; i++ {
-		gd = append(gd, line)
+		gd = append(gd, make([]int, tg.Width))
 	}
 	grid := &Grid{
 		Width:  tg.Width,

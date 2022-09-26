@@ -21,6 +21,7 @@ type Multipliable interface {
 	Multipliable() bool
 }
 
+// If two matrixes has same width and height, we call them cophenetic.
 type IsCophenetic interface {
 	IsCophenetic() bool
 }
