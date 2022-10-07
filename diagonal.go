@@ -20,15 +20,3 @@ func (dg *DiagonalMatrix) Add(addend *DiagonalMatrix) *DiagonalMatrix {
 func (dg *DiagonalMatrix) Transpose() *DiagonalMatrix {
 	return dg
 }
-
-// It is a bad idea to use 'Constructor' in Go
-func (dg *DiagonalMatrix) Constructor(matrix *Grid) *DiagonalMatrix {
-	dm := &DiagonalMatrix{
-		Length: matrix.Height,
-		Val:    make([]int, matrix.Height),
-	}
-	for i := 0; i < dg.Length; i++ {
-		dm.Val[i] = matrix.Val[i][i]
-	}
-	return dm
-}

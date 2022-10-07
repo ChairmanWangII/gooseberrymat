@@ -17,34 +17,6 @@ type QuadTreeNode struct {
 	BottomRight *QuadTreeNode
 }
 
-// As usual, in this package, Constructor is how a grid matrix parse to this data type.
-func (qt *QuadTree) Constructor(matrix *Grid) *QuadTree {
-	var dfs func([][]int, int, int) *QuadTreeNode
-	dfs = func(grid [][]int, leftBound, rightBound int) *QuadTreeNode {
-		for _, row := range grid {
-			for _, v := range row[leftBound:rightBound] {
-				if v != grid[0][leftBound] {
-					rowMid, colMid := len(grid)/2, (leftBound+rightBound)/2
-					return &QuadTreeNode{
-						0,
-						false,
-						dfs(grid[:rowMid], leftBound, colMid),
-						dfs(grid[:rowMid], colMid, rightBound),
-						dfs(grid[rowMid:], leftBound, colMid),
-						dfs(grid[rowMid:], colMid, rightBound),
-					}
-				}
-			}
-		}
-		return &QuadTreeNode{Val: grid[0][leftBound], IsLeaf: true}
-	}
-	return &QuadTree{
-		Root:   dfs(matrix.Val, 0, len(matrix.Val)),
-		Length: len(matrix.Val),
-	}
-
-}
-
 func (qt *QuadTree) Width() int {
 	return qt.Length
 }

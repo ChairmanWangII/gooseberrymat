@@ -15,7 +15,3 @@ type OrthogonalLinkedNode struct {
 	DownNode  *OrthogonalLinkedNode
 	RightNode *OrthogonalLinkedNode
 }
-
-func (ol *OrthogonalLinkedList) Constructor(matrix *Grid) *OrthogonalLinkedList {
-	return nil
-}

@@ -61,3 +61,60 @@ func (gd *Grid) Add(addend *Grid) *Grid {
 	}
 	return res
 }
+
+func (gd *Grid) ParseToOrth() *OrthogonalLinkedList {
+	return nil
+}
+
+// As usual, in this package, Constructor is how a grid matrix parse to this data type.
+func (gd *Grid) ParseToQuadTree() *QuadTree {
+	var dfs func([][]int, int, int) *QuadTreeNode
+	dfs = func(grid [][]int, leftBound, rightBound int) *QuadTreeNode {
+		for _, row := range grid {
+			for _, v := range row[leftBound:rightBound] {
+				if v != grid[0][leftBound] {
+					rowMid, colMid := len(grid)/2, (leftBound+rightBound)/2
+					return &QuadTreeNode{
+						0,
+						false,
+						dfs(grid[:rowMid], leftBound, colMid),
+						dfs(grid[:rowMid], colMid, rightBound),
+						dfs(grid[rowMid:], leftBound, colMid),
+						dfs(grid[rowMid:], colMid, rightBound),
+					}
+				}
+			}
+		}
+		return &QuadTreeNode{Val: grid[0][leftBound], IsLeaf: true}
+	}
+	return &QuadTree{
+		Root:   dfs(gd.Val, 0, len(gd.Val)),
+		Length: len(gd.Val),
+	}
+}
+
+// It is a bad idea to use 'Constructor' in Go
+func (gd *Grid) ParseToDiag() *DiagonalMatrix {
+	dm := &DiagonalMatrix{
+		Length: gd.Height,
+		Val:    make([]int, gd.Height),
+	}
+	for i := 0; i < dm.Length; i++ {
+		dm.Val[i] = gd.Val[i][i]
+	}
+	return dm
+}
+
+func (gd *Grid) ParseToTrigram() *Trigram {
+	var tg *Trigram
+	for i, line := range gd.Val {
+		for j, v := range line {
+			tg.Val = append(tg.Val, &TrigramNode{
+				Row: i,
+				Col: j,
+				Val: v,
+			})
+		}
+	}
+	return tg
+}

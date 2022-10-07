@@ -12,19 +12,6 @@ type TrigramNode struct {
 	Val int
 }
 
-func (tg *Trigram) Constructor(gd *Grid) *Trigram {
-	for i, line := range gd.Val {
-		for j, v := range line {
-			tg.Val = append(tg.Val, &TrigramNode{
-				Row: i,
-				Col: j,
-				Val: v,
-			})
-		}
-	}
-	return tg
-}
-
 // TODO need reconstrct
 func (tg *Trigram) ParseToGrid() *Grid {
 	gd := make([][]int, 0)
