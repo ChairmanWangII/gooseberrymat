@@ -71,3 +71,21 @@ func TestTransposeQuadTree(t *testing.T) {
 	t.Log("---------------")
 	t.Log(testGrid)
 }
+
+func TestTrigramTidy(t *testing.T) {
+	matrix := [][]int{
+		{1, 2, 0},
+		{2, 2, 0},
+		{0, 0, 1},
+	}
+	var tg *Trigram
+	tg.ParseTwoDimensionalSliceToTrigram(matrix)
+	t.Log("this is a matrix")
+	t.Log(tg.Val)
+	tg.shuffle()
+	t.Log("shuffled matrix")
+	t.Log(tg.Val)
+	tg.tidy()
+	t.Log("tidied matrix")
+	t.Log(tg.Val)
+}
