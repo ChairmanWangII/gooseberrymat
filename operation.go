@@ -28,3 +28,7 @@ type IsCophenetic interface {
 type Transpose interface {
 	Transpose()
 }
+
+type PrettyPrint interface {
+	PrettyPrint()
+}
