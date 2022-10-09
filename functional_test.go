@@ -1,6 +1,7 @@
 package gooseberrymat
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -88,4 +89,11 @@ func TestTrigramTidy(t *testing.T) {
 	tg.tidy()
 	t.Log("tidied matrix")
 	t.Log(tg.Val)
+}
+
+func Test2dSlice(t *testing.T) {
+	matrix := Init2dSlice(3, 5)
+	for _, line := range matrix {
+		fmt.Println(line)
+	}
 }

@@ -107,7 +107,10 @@ func (gd *Grid) ParseToDiag() *DiagonalMatrix {
 }
 
 func (gd *Grid) ParseToTrigram() *Trigram {
-	var tg *Trigram
+	tg := &Trigram{
+		Width:  gd.Width,
+		Height: gd.Height,
+	}
 	for i, line := range gd.Val {
 		for j, v := range line {
 			tg.Val = append(tg.Val, &TrigramNode{
@@ -117,5 +120,6 @@ func (gd *Grid) ParseToTrigram() *Trigram {
 			})
 		}
 	}
+	tg.Length = len(gd.Val)
 	return tg
 }

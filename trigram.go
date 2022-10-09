@@ -5,9 +5,11 @@ import (
 	"sort"
 )
 
+// Trigram is the only indefinite length structure, so we need calculate its Length.
 type Trigram struct {
 	Width  int
 	Height int
+	Length int
 	Val    []*TrigramNode
 }
 
@@ -76,4 +78,28 @@ func (tg *Trigram) shuffle() {
 		r := i + rand.Intn(N-i)
 		tg.Val[r], tg.Val[i] = tg.Val[i], tg.Val[r]
 	}
+}
+
+// TODO seriously, it is important but it was too late to finish this staff.
+func (tg *Trigram) Add(addend *Trigram) *Trigram {
+	tg.tidy()
+	addend.tidy()
+	res := &Trigram{
+		Width:  tg.Width,
+		Height: tg.Height,
+		Val:    make([]*TrigramNode, 0),
+	}
+	leftLen, rightLen := tg.Length, addend.Length
+	l, r := 0, 0
+	for (leftLen-l-1)*(rightLen-r-1) != 0 {
+
+	}
+	// Append unmerged data to result Trigram.
+	if leftLen-l-1 != 0 {
+		res.Val = append(res.Val, tg.Val[leftLen-l:]...)
+	}
+	if rightLen-r-1 != 0 {
+		res.Val = append(res.Val, addend.Val[rightLen-r:]...)
+	}
+	return res
 }

@@ -29,6 +29,7 @@ type Transpose interface {
 	Transpose()
 }
 
+// Used to print data structure with format.
 type PrettyPrint interface {
 	PrettyPrint()
 }
