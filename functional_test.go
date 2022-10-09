@@ -37,7 +37,7 @@ func TestParseToGrid(t *testing.T) {
 		Val: testGrid,
 	}
 	qt := gd.ParseToQuadTree()
-	gd = qt.ParseToGrid()
+	gd = qt.ToGrid()
 	t.Log(gd)
 }
 
@@ -59,13 +59,13 @@ func TestTransposeQuadTree(t *testing.T) {
 	t.Log("---------------")
 	t.Log(gd.Val)
 	qt := gd.ParseToQuadTree()
-	gd = qt.ParseToGrid()
+	gd = qt.ToGrid()
 	t.Log("print changed matrix")
 	t.Log("---------------")
 	t.Log(gd.Val)
 
 	qtt := qt.Transpose()
-	res := qtt.ParseToGrid()
+	res := qtt.ToGrid()
 	t.Log(res.Val)
 	t.Log("print transposed matrix")
 	t.Log("---------------")
@@ -79,7 +79,7 @@ func TestTrigramTidy(t *testing.T) {
 		{0, 0, 1},
 	}
 	var tg *Trigram
-	tg.ParseTwoDimensionalSliceToTrigram(matrix)
+	tg = tg.From2dSliceToTrigram(matrix)
 	t.Log("this is a matrix")
 	t.Log(tg.Val)
 	tg.shuffle()

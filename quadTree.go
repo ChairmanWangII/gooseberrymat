@@ -25,7 +25,7 @@ func (qt *QuadTree) Height() int {
 	return qt.Length
 }
 
-func (qt *QuadTree) ParseToGrid() *Grid {
+func (qt *QuadTree) ToGrid() *Grid {
 	length := qt.Length
 	grid := make([][]int, length)
 	for i := range grid {

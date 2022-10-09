@@ -20,3 +20,8 @@ func (dg *DiagonalMatrix) Add(addend *DiagonalMatrix) *DiagonalMatrix {
 func (dg *DiagonalMatrix) Transpose() *DiagonalMatrix {
 	return dg
 }
+
+// TODO this function need to be done
+func (dg *DiagonalMatrix) ToGrid() *Grid {
+	return nil
+}

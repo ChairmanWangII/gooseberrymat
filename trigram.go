@@ -18,7 +18,7 @@ type TrigramNode struct {
 }
 
 // TODO need reconstrct
-func (tg *Trigram) ParseToGrid() *Grid {
+func (tg *Trigram) ToGrid() *Grid {
 	gd := make([][]int, 0)
 	for i := 0; i < tg.Height; i++ {
 		gd = append(gd, make([]int, tg.Width))
@@ -54,14 +54,20 @@ func (tg *Trigram) tidy() *Trigram {
 }
 
 // This function is used to test.
-func (tg *Trigram) ParseTwoDimensionalSliceToTrigram(matrix [][]int) {
+func (tg *Trigram) From2dSliceToTrigram(matrix [][]int) *Trigram {
+	tr := &Trigram{
+		Val:    make([]*TrigramNode, 0),
+		Width:  len(matrix[0]),
+		Height: len(matrix),
+	}
 	for i, line := range matrix {
 		for j := range line {
 			if matrix[i][j] != 0 {
-				tg.Val = append(tg.Val, &TrigramNode{i, j, matrix[i][j]})
+				tr.Val = append(tr.Val, &TrigramNode{i, j, matrix[i][j]})
 			}
 		}
 	}
+	return tr
 }
 
 func (tg *Trigram) shuffle() {

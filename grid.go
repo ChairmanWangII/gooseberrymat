@@ -62,6 +62,7 @@ func (gd *Grid) Add(addend *Grid) *Grid {
 	return res
 }
 
+// TODO this function need to be done.
 func (gd *Grid) ParseToOrth() *OrthogonalLinkedList {
 	return nil
 }
