@@ -80,7 +80,6 @@ func (tg *Trigram) shuffle() {
 	}
 }
 
-// TODO seriously, it is important but it was too late to finish this staff.
 func (tg *Trigram) Add(addend *Trigram) *Trigram {
 	tg.tidy()
 	addend.tidy()
@@ -92,14 +91,30 @@ func (tg *Trigram) Add(addend *Trigram) *Trigram {
 	leftLen, rightLen := tg.Length, addend.Length
 	l, r := 0, 0
 	for (leftLen-l-1)*(rightLen-r-1) != 0 {
-
-	}
-	// Append unmerged data to result Trigram.
-	if leftLen-l-1 != 0 {
-		res.Val = append(res.Val, tg.Val[leftLen-l:]...)
-	}
-	if rightLen-r-1 != 0 {
-		res.Val = append(res.Val, addend.Val[rightLen-r:]...)
+		if tg.Val[l].Col == addend.Val[r].Col && tg.Val[l].Row == addend.Val[r].Row {
+			res.Val = append(res.Val, &TrigramNode{
+				Val: tg.Val[l].Val + addend.Val[r].Val,
+				Row: tg.Val[l].Row,
+				Col: tg.Val[l].Col,
+			})
+			l++
+			r++
+		}
+		if tg.Val[l].Row > addend.Val[r].Row || tg.Val[l].Row == addend.Val[r].Row && tg.Val[l].Col > addend.Val[r].Col {
+			res.Val = append(res.Val, addend.Val[r])
+			r++
+		}
+		if tg.Val[l].Row < addend.Val[r].Row || tg.Val[l].Row == addend.Val[r].Row && tg.Val[l].Col < addend.Val[r].Col {
+			res.Val = append(res.Val, tg.Val[l])
+			l++
+		}
+		// Append unmerged data to result Trigram.
+		if leftLen-l-1 != 0 {
+			res.Val = append(res.Val, tg.Val[leftLen-l:]...)
+		}
+		if rightLen-r-1 != 0 {
+			res.Val = append(res.Val, addend.Val[rightLen-r:]...)
+		}
 	}
 	return res
 }
