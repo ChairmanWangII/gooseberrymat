@@ -21,7 +21,14 @@ func (dg *DiagonalMatrix) Transpose() *DiagonalMatrix {
 	return dg
 }
 
-// TODO this function need to be done
 func (dg *DiagonalMatrix) ToGrid() *Grid {
-	return nil
+	grid := &Grid{
+		Val:    Init2dSlice(dg.Length, dg.Length),
+		Width:  dg.Length,
+		Height: dg.Length,
+	}
+	for i := 0; i < dg.Length; i++ {
+		grid.Val[i][i] = dg.Val[i]
+	}
+	return grid
 }

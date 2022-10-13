@@ -19,16 +19,12 @@ type TrigramNode struct {
 	Val int
 }
 
-// TODO need reconstrct
 func (tg *Trigram) ToGrid() *Grid {
-	gd := make([][]int, 0)
-	for i := 0; i < tg.Height; i++ {
-		gd = append(gd, make([]int, tg.Width))
-	}
+	val := Init2dSlice(tg.Width, tg.Height)
 	grid := &Grid{
 		Width:  tg.Width,
 		Height: tg.Height,
-		Val:    gd,
+		Val:    val,
 	}
 	for _, v := range tg.Val {
 		grid.Val[v.Row][v.Col] = v.Val
