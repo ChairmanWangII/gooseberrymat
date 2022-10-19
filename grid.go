@@ -63,7 +63,7 @@ func (gd *Grid) Add(addend *Grid) *Grid {
 }
 
 // TODO this function need to be done.
-func (gd *Grid) ParseToOrthgonal() *OrthogonalLinkedList {
+func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
 	orth := &OrthogonalLinkedList{
 		Width:   gd.Width,
 		Height:  gd.Height,
@@ -76,7 +76,7 @@ func (gd *Grid) ParseToOrthgonal() *OrthogonalLinkedList {
 }
 
 // As usual, in this package, Constructor is how a grid matrix parse to this data type.
-func (gd *Grid) ParseToQuadTree() *QuadTree {
+func (gd *Grid) ToQuadTree() *QuadTree {
 	var dfs func([][]int, int, int) *QuadTreeNode
 	dfs = func(grid [][]int, leftBound, rightBound int) *QuadTreeNode {
 		for _, row := range grid {
@@ -103,7 +103,7 @@ func (gd *Grid) ParseToQuadTree() *QuadTree {
 }
 
 // It is a bad idea to use 'Constructor' in Go
-func (gd *Grid) ParseToDiag() *DiagonalMatrix {
+func (gd *Grid) ToDiag() *DiagonalMatrix {
 	dm := &DiagonalMatrix{
 		Length: gd.Height,
 		Val:    make([]int, gd.Height),
@@ -114,7 +114,7 @@ func (gd *Grid) ParseToDiag() *DiagonalMatrix {
 	return dm
 }
 
-func (gd *Grid) ParseToTrigram() *Trigram {
+func (gd *Grid) ToTrigram() *Trigram {
 	tg := &Trigram{
 		Width:  gd.Width,
 		Height: gd.Height,

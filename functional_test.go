@@ -19,7 +19,7 @@ func TestQuadTreeConstructor(t *testing.T) {
 	gd := &Grid{
 		Val: testGrid,
 	}
-	qt := gd.ParseToQuadTree()
+	qt := gd.ToQuadTree()
 	t.Log(qt)
 }
 
@@ -37,7 +37,7 @@ func TestParseToGrid(t *testing.T) {
 	gd := &Grid{
 		Val: testGrid,
 	}
-	qt := gd.ParseToQuadTree()
+	qt := gd.ToQuadTree()
 	gd = qt.ToGrid()
 	t.Log(gd)
 }
@@ -59,7 +59,7 @@ func TestTransposeQuadTree(t *testing.T) {
 	t.Log("print origin matrix")
 	t.Log("---------------")
 	t.Log(gd.Val)
-	qt := gd.ParseToQuadTree()
+	qt := gd.ToQuadTree()
 	gd = qt.ToGrid()
 	t.Log("print changed matrix")
 	t.Log("---------------")
