@@ -63,8 +63,16 @@ func (gd *Grid) Add(addend *Grid) *Grid {
 }
 
 // TODO this function need to be done.
-func (gd *Grid) ParseToOrth() *OrthogonalLinkedList {
-	return nil
+func (gd *Grid) ParseToOrthgonal() *OrthogonalLinkedList {
+	orth := &OrthogonalLinkedList{
+		Width:   gd.Width,
+		Height:  gd.Height,
+		NotNull: 0,
+		Col:     make([]*OrthogonalLinkedNode, gd.Height),
+		Row:     make([]*OrthogonalLinkedNode, gd.Width),
+	}
+
+	return orth
 }
 
 // As usual, in this package, Constructor is how a grid matrix parse to this data type.
@@ -122,4 +130,16 @@ func (gd *Grid) ParseToTrigram() *Trigram {
 	}
 	tg.Length = len(gd.Val)
 	return tg
+}
+
+// Though I don't know what to do...
+func (gd *Grid) IsToeplitzMatrix() bool {
+	for i := 1; i < gd.Height; i++ {
+		for j := 1; j < gd.Width; j++ {
+			if gd.Val[i][j] != gd.Val[i-1][j-1] {
+				return false
+			}
+		}
+	}
+	return true
 }
