@@ -31,13 +31,24 @@ func (gd *Grid) IsQuadrable() bool {
 }
 
 func (gd *Grid) Transpose() *Grid {
-	length := gd.Height
-	for i := range gd.Val {
-		for j := i + 1; j < length; j++ {
-			gd.Val[i][j], gd.Val[j][i] = gd.Val[j][i], gd.Val[i][j]
+	height, width := gd.Height, gd.Width
+	tGrid := make([][]int, width)
+	for i := range tGrid {
+		tGrid[i] = make([]int, height)
+		for j := range tGrid[i] {
+			tGrid[i][j] = -1
 		}
 	}
-	return gd
+	for i, row := range gd.Val {
+		for j, v := range row {
+			tGrid[j][i] = v
+		}
+	}
+	return &Grid{
+		Height: gd.Width,
+		Width:  gd.Height,
+		Val:    tGrid,
+	}
 }
 
 // Judge if two matrixes are cophenetic.
