@@ -73,7 +73,6 @@ func (gd *Grid) Add(addend *Grid) *Grid {
 	return res
 }
 
-// TODO this function need to be done.
 func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
 	orth := &OrthogonalLinkedList{
 		Width:   gd.Width,
@@ -115,7 +114,6 @@ func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
 	return orth
 }
 
-// As usual, in this package, Constructor is how a grid matrix parse to this data type.
 func (gd *Grid) ToQuadTree() *QuadTree {
 	var dfs func([][]int, int, int) *QuadTreeNode
 	dfs = func(grid [][]int, leftBound, rightBound int) *QuadTreeNode {
