@@ -83,6 +83,35 @@ func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
 		Row:     make([]*OrthogonalLinkedNode, gd.Width),
 	}
 
+	downList := make([]*OrthogonalLinkedNode, orth.Width)
+	for i, line := range gd.Val {
+		head := orth.Col[i]
+		for j := range line {
+			if gd.Val[i][j] != 0 {
+				node := &OrthogonalLinkedNode{
+					Col:       i,
+					Row:       j,
+					Val:       gd.Val[i][j],
+					DownNode:  nil,
+					RightNode: nil,
+				}
+				if head == nil {
+					head = node
+				} else {
+					head.RightNode = node
+					head = head.RightNode
+				}
+				if orth.Row[j] == nil {
+					orth.Row[j] = node
+					downList[j] = node
+				} else {
+					downList[j].DownNode = node
+					downList[j] = downList[j].DownNode
+				}
+			}
+
+		}
+	}
 	return orth
 }
 
