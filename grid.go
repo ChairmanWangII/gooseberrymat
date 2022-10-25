@@ -6,6 +6,75 @@ type Grid struct {
 	Val    [][]int
 }
 
+func (gd *Grid) Add(addend *Grid) *Grid {
+	res := &Grid{
+		Width:  gd.Width,
+		Height: gd.Height,
+		Val:    gd.Val,
+	}
+	for i := 0; i < gd.Height; i++ {
+		for j := 0; j < gd.Width; j++ {
+			res.Val[i][j] += addend.Val[i][j]
+		}
+	}
+	return res
+}
+
+func (gd *Grid) Multiply(multiplier *Grid) *Grid {
+	if gd.Width != multiplier.Height {
+		return nil
+	}
+	res := &Grid{
+		Width:  multiplier.Width,
+		Height: gd.Height,
+		Val:    Init2dSlice(multiplier.Width, gd.Height),
+	}
+	operationCount := gd.Width
+	for i, line := range res.Val {
+		for j := range line {
+			count := 0
+			for m := 0; m < operationCount; m++ {
+				count += gd.Val[i][m] * multiplier.Val[m][j]
+			}
+			res.Val[i][j] = count
+		}
+	}
+	return res
+}
+
+func (gd *Grid) Transpose() *Grid {
+	height, width := gd.Height, gd.Width
+	tGrid := make([][]int, width)
+	for i := range tGrid {
+		tGrid[i] = make([]int, height)
+		for j := range tGrid[i] {
+			tGrid[i][j] = -1
+		}
+	}
+	for i, row := range gd.Val {
+		for j, v := range row {
+			tGrid[j][i] = v
+		}
+	}
+	return &Grid{
+		Height: gd.Width,
+		Width:  gd.Height,
+		Val:    tGrid,
+	}
+}
+
+// Though I don't know what to do...
+func (gd *Grid) IsToeplitzMatrix() bool {
+	for i := 1; i < gd.Height; i++ {
+		for j := 1; j < gd.Width; j++ {
+			if gd.Val[i][j] != gd.Val[i-1][j-1] {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func (gd *Grid) IsDiagonal() bool {
 	if gd.Height != gd.Width {
 		return false
@@ -30,47 +99,12 @@ func (gd *Grid) IsQuadrable() bool {
 	return true
 }
 
-func (gd *Grid) Transpose() *Grid {
-	height, width := gd.Height, gd.Width
-	tGrid := make([][]int, width)
-	for i := range tGrid {
-		tGrid[i] = make([]int, height)
-		for j := range tGrid[i] {
-			tGrid[i][j] = -1
-		}
-	}
-	for i, row := range gd.Val {
-		for j, v := range row {
-			tGrid[j][i] = v
-		}
-	}
-	return &Grid{
-		Height: gd.Width,
-		Width:  gd.Height,
-		Val:    tGrid,
-	}
-}
-
 // Judge if two matrixes are cophenetic.
 func (gd *Grid) IsCophenetic(grid *Grid) bool {
 	if gd.Height == grid.Height && gd.Width == grid.Width {
 		return true
 	}
 	return false
-}
-
-func (gd *Grid) Add(addend *Grid) *Grid {
-	res := &Grid{
-		Width:  gd.Width,
-		Height: gd.Height,
-		Val:    gd.Val,
-	}
-	for i := 0; i < gd.Height; i++ {
-		for j := 0; j < gd.Width; j++ {
-			res.Val[i][j] += addend.Val[i][j]
-		}
-	}
-	return res
 }
 
 func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
@@ -168,16 +202,4 @@ func (gd *Grid) ToTrigram() *Trigram {
 	}
 	tg.Length = len(gd.Val)
 	return tg
-}
-
-// Though I don't know what to do...
-func (gd *Grid) IsToeplitzMatrix() bool {
-	for i := 1; i < gd.Height; i++ {
-		for j := 1; j < gd.Width; j++ {
-			if gd.Val[i][j] != gd.Val[i-1][j-1] {
-				return false
-			}
-		}
-	}
-	return true
 }
