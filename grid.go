@@ -20,28 +20,6 @@ func (gd *Grid) Add(addend *Grid) *Grid {
 	return res
 }
 
-func (gd *Grid) Multiply(multiplier *Grid) *Grid {
-	if gd.Width != multiplier.Height {
-		return nil
-	}
-	res := &Grid{
-		Width:  multiplier.Width,
-		Height: gd.Height,
-		Val:    Init2dSlice(multiplier.Width, gd.Height),
-	}
-	operationCount := gd.Width
-	for i, line := range res.Val {
-		for j := range line {
-			count := 0
-			for m := 0; m < operationCount; m++ {
-				count += gd.Val[i][m] * multiplier.Val[m][j]
-			}
-			res.Val[i][j] = count
-		}
-	}
-	return res
-}
-
 func (gd *Grid) Transpose() *Grid {
 	height, width := gd.Height, gd.Width
 	tGrid := make([][]int, width)
