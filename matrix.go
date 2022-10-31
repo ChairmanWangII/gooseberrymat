@@ -3,6 +3,7 @@ package gooseberrymat
 type Matrix struct {
 	Error         []error
 	DataStructure interface{}
+	SparsityRate  float64
 }
 
 func (mt *Matrix) Multiply(mul *Matrix) *Matrix {
@@ -12,4 +13,5 @@ func (mt *Matrix) Multiply(mul *Matrix) *Matrix {
 
 	default:
 	}
+	return nil
 }

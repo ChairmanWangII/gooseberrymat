@@ -134,3 +134,8 @@ func (qt *QuadTree) Transpose() *QuadTree {
 		Root:   dfs(qt.Root),
 	}
 }
+
+func (qt *QuadTree) PrettyPrint() string {
+
+	return ""
+}
