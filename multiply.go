@@ -25,7 +25,8 @@ func (gd *Grid) Stressen(mul *Grid) *Grid {
 	stressenAlgorithm = func(a, b [][]int) [][]int {
 		aWidth, aHeight := len(a[0]), len(a)
 		bWidth, bHeight := len(b[0]), len(b)
-		if aHeight%2 != 0 || aWidth%2 != 0 || bHeight%2 != 0 || bWidth%2 != 0 {
+		if aHeight%2 != 0 || aWidth%2 != 0 || bHeight%2 != 0 || bWidth%2 != 0 ||
+			aHeight < STRESSEN_BORDER || aWidth < STRESSEN_BORDER || bWidth < STRESSEN_BORDER {
 			return baseMultiply(a, b)
 		}
 		A11 := a[:aHeight/2+1][:aWidth/2+1]

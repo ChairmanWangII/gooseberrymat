@@ -3,5 +3,6 @@ package gooseberrymat
 import "errors"
 
 var (
-	InvalidMultplyParam = errors.New("invalid mutiply parameters")
+	// ErrInvalidMultplyParam record this multiply function has math errs
+	ErrInvalidMultplyParam = errors.New("invalid mutiply parameters")
 )
