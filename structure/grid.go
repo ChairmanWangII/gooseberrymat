@@ -1,4 +1,4 @@
-package gooseberrymat
+package structure
 
 type Grid struct {
 	Width  int

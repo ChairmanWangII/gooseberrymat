@@ -1,4 +1,4 @@
-package gooseberrymat
+package structure
 
 // Quad tree is a structure used to represent a type of matrix
 // whose width equals to height and length is an exponential multiple of two.

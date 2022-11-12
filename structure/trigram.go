@@ -1,4 +1,4 @@
-package gooseberrymat
+package structure
 
 import (
 	"math/rand"
