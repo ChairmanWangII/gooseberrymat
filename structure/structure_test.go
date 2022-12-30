@@ -97,3 +97,11 @@ func Test2dSlice(t *testing.T) {
 		fmt.Println(line)
 	}
 }
+func TestNilType(t *testing.T) {
+	testGrid := &Grid{
+		Height: 12,
+	}
+	if testGrid.Val == nil {
+		fmt.Println("approve")
+	}
+}

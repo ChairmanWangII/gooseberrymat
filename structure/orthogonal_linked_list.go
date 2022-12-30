@@ -1,4 +1,4 @@
-package gooseberrymat
+package structure
 
 type OrthogonalLinkedList struct {
 	Width   int

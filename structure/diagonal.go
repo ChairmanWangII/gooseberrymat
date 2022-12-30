@@ -1,8 +1,10 @@
 package structure
 
+// If the diagonal matrix is left-top to right-bottom, the direction is TRUE.
 type DiagonalMatrix struct {
-	Length int
-	Val    []int
+	Length    int
+	Val       []int
+	direction bool
 }
 
 func (dg *DiagonalMatrix) Add(addend *DiagonalMatrix) *DiagonalMatrix {
@@ -31,4 +33,8 @@ func (dg *DiagonalMatrix) ToGrid() *Grid {
 		grid.Val[i][i] = dg.Val[i]
 	}
 	return grid
+}
+
+func (dg *DiagonalMatrix) PrettyPrint() string {
+	return ""
 }
