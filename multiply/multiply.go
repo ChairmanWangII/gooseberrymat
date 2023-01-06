@@ -5,6 +5,26 @@ import (
 )
 
 func BaseMultiply(multiplier, multiplicand *MatrixType) (res *MatrixType) {
+	// It's plenty of tricks if you multiply with a diagonal matrix
+	if multiplier.Dg != nil && multiplicand.Dg != nil {
+		if multiplier.Dg.Direction != multiplicand.Dg.Direction {
+			length := multiplier.Gd.Height
+			if length%2 == 0 {
+				val := st.Init2dSlice(length, length)
+				val[length/2][length/2] = multiplier.Dg.Val[length/2] * multiplicand.Dg.Val[length/2]
+				return &MatrixType{
+					Gd: &st.Grid{
+						Val: val,
+					},
+				}
+			} else {
+				return &MatrixType{
+					Zero: true,
+				}
+			}
+
+		}
+	}
 
 	muSlice := []*MatrixType{multiplicand, multiplier}
 	for _, mu := range muSlice {
@@ -18,7 +38,7 @@ func BaseMultiply(multiplier, multiplicand *MatrixType) (res *MatrixType) {
 			mu.Gd = mu.Tg.ToGrid()
 		}
 	}
-	res = &MatrixType{Gd: SimpleMultiply(multiplicand.Gd, multiplier.Gd)}
+	res = Grid2MatrixType(SimpleMultiply(multiplicand.Gd, multiplier.Gd))
 	return
 }
 

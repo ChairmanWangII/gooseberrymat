@@ -3,11 +3,12 @@ package multiply
 import st "gooseberrymat/structure"
 
 type MatrixType struct {
-	Gd  *st.Grid
-	Oll *st.OrthogonalLinkedList
-	Qt  *st.QuadTree
-	Tg  *st.Trigram
-	Dg  *st.DiagonalMatrix
+	Gd   *st.Grid
+	Oll  *st.OrthogonalLinkedList
+	Qt   *st.QuadTree
+	Tg   *st.Trigram
+	Dg   *st.DiagonalMatrix
+	Zero bool
 }
 
 func (mt *MatrixType) Multiply(mul *MatrixType) *MatrixType {

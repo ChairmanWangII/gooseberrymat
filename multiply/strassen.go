@@ -2,13 +2,12 @@ package multiply
 
 import (
 	gb "gooseberrymat"
-	"gooseberrymat/structure"
 	st "gooseberrymat/structure"
 )
 
 // Those can apply Stessen algorithm must can be divided four pices.
 // TODO need test.
-func Stressen(gd, mul *structure.Grid) *structure.Grid {
+func Stressen(gd, mul *st.Grid) *st.Grid {
 	res := &st.Grid{
 		Width:  mul.Width,
 		Height: gd.Height,
