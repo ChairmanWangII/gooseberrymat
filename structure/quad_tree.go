@@ -1,5 +1,11 @@
 package structure
 
+import (
+	"fmt"
+	"strings"
+	"unicode/utf8"
+)
+
 // Quad tree is a structure used to represent a type of matrix
 // whose width equals to height and length is an exponential multiple of two.
 // Especially for those matrixes has lots of same data.
@@ -7,6 +13,18 @@ type QuadTree struct {
 	Root   *QuadTreeNode
 	Length int
 }
+
+const (
+	BoxVer       = "│"
+	BoxHor       = "─"
+	BoxVerRight  = "├"
+	BoxDownLeft  = "┐"
+	BoxDownRight = "┌"
+	BoxDownHor   = "┬"
+	BoxUpRight   = "└"
+	// Gutter is number of spaces between two adjacent child nodes.
+	Gutter = 2
+)
 
 type QuadTreeNode struct {
 	Val         int
@@ -135,7 +153,63 @@ func (qt *QuadTree) Transpose() *QuadTree {
 	}
 }
 
-func (qt *QuadTree) PrettyPrint() string {
+// Return the list of children.
+func (qt *QuadTreeNode) Children() []*QuadTreeNode {
+	var res []*QuadTreeNode
+	res = append(res, qt.TopLeft)
+	res = append(res, qt.TopRight)
+	res = append(res, qt.BottomLeft)
+	res = append(res, qt.BottomRight)
+	return res
+}
 
-	return ""
+func (qt *QuadTree) PrettyPrint() string {
+	return Sprint(qt.Root)
+}
+
+// Returns the horizontal formatted tree.
+func Sprint(root *QuadTreeNode) (s string) {
+	for _, line := range lines(root) {
+		// ignore runes before root node
+		line = string([]rune(line)[2:])
+		s += strings.TrimRight(line, " ") + "\n"
+	}
+	return
+}
+
+func lines(root *QuadTreeNode) (s []string) {
+	data := fmt.Sprintf("%s %v ", BoxHor, root.Val)
+	l := len(root.Children())
+	if l == 0 {
+		s = append(s, data)
+		return
+	}
+
+	w := utf8.RuneCountInString(data)
+	for i, c := range root.Children() {
+		for j, line := range lines(c) {
+			if i == 0 && j == 0 {
+				if l == 1 {
+					s = append(s, data+BoxHor+line)
+				} else {
+					s = append(s, data+BoxDownHor+line)
+				}
+				continue
+			}
+
+			var box string
+			if i == l-1 && j == 0 {
+				// first line of the last child
+				box = BoxUpRight
+			} else if i == l-1 {
+				box = " "
+			} else if j == 0 {
+				box = BoxVerRight
+			} else {
+				box = BoxVer
+			}
+			s = append(s, strings.Repeat(" ", w)+box+line)
+		}
+	}
+	return
 }

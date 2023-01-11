@@ -9,6 +9,7 @@ type MatrixType struct {
 	Tg   *st.Trigram
 	Dg   *st.DiagonalMatrix
 	Zero bool
+	Err  []error
 }
 
 func (mt *MatrixType) Multiply(mul *MatrixType) *MatrixType {

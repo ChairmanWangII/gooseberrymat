@@ -105,3 +105,24 @@ func TestNilType(t *testing.T) {
 		fmt.Println("approve")
 	}
 }
+
+func TestQuadTreePrettyPrint(t *testing.T) {
+	testGrid := [][]int{
+		{1, 1, 2, 2, 0, 0, 0, 0},
+		{1, 1, 2, 2, 0, 0, 0, 0},
+		{1, 1, 1, 1, 3, 3, 1, 1},
+		{1, 1, 1, 1, 3, 3, 1, 1},
+		{1, 1, 1, 1, 5, 5, 0, 0},
+		{1, 1, 1, 1, 5, 5, 0, 0},
+		{1, 1, 1, 1, 0, 0, 0, 0},
+		{1, 1, 1, 1, 0, 0, 0, 0},
+	}
+	gd := &Grid{
+		Val:    testGrid,
+		Width:  8,
+		Height: 8,
+	}
+	tg := gd.ToQuadTree()
+	str := tg.PrettyPrint()
+	t.Log(str)
+}
