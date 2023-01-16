@@ -26,6 +26,22 @@ func getTestDiagonal() *DiagonalMatrix {
 	}
 }
 
+func getTestTrigram() *Trigram {
+	tn1 := &TrigramNode{Row: 1, Col: 1, Val: 2}
+	tn2 := &TrigramNode{Row: 2, Col: 1, Val: 3}
+	tn3 := &TrigramNode{Row: 3, Col: 4, Val: 6}
+	tn4 := &TrigramNode{Row: 4, Col: 4, Val: 1}
+	tn5 := &TrigramNode{Row: 4, Col: 5, Val: 7}
+	return &Trigram{
+		Width:  5,
+		Height: 5,
+		Length: 5,
+		Val: []*TrigramNode{
+			tn1, tn2, tn3, tn4, tn5,
+		},
+	}
+}
+
 func TestQuadTreeConstructor(t *testing.T) {
 	gd := &Grid{
 		Val: getTestGrid(),
@@ -113,5 +129,10 @@ func TestQuadTreePrettyPrint(t *testing.T) {
 func TestDiagonalPrettyPrint(t *testing.T) {
 	str := getTestDiagonal().PrettyPrint()
 	t.Log(str)
+	fmt.Println(str)
+}
+
+func TestTrigramPerttyPrint(t *testing.T) {
+	str := getTestTrigram().PrettyPrint()
 	fmt.Println(str)
 }

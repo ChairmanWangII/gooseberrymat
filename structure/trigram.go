@@ -1,6 +1,7 @@
 package structure
 
 import (
+	"fmt"
 	"math/rand"
 	"sort"
 )
@@ -113,4 +114,16 @@ func (tg *Trigram) Add(addend *Trigram) *Trigram {
 		}
 	}
 	return res
+}
+
+func (tn *TrigramNode) format() string {
+	return fmt.Sprint("(", tn.Row, tn.Col, tn.Val, ")")
+}
+
+func (tg *Trigram) PrettyPrint() string {
+	var str string
+	for _, item := range tg.Val {
+		str = fmt.Sprint(str, item.format(), " ")
+	}
+	return str
 }
