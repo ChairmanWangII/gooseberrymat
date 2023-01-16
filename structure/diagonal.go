@@ -2,21 +2,22 @@ package structure
 
 import "fmt"
 
-// If the diagonal matrix is left-top to right-bottom, the direction is TRUE.
 type DiagonalMatrix struct {
 	Length    int
 	Val       []int
-	Direction bool
+	Direction bool // If the diagonal matrix is left-top to right-bottom, the direction is TRUE.
 }
 
+// TODO now this function can only add dianonal matrixes with same direction.
 func (dg *DiagonalMatrix) Add(addend *DiagonalMatrix) *DiagonalMatrix {
 	sum := make([]int, dg.Length)
 	for i := range sum {
 		sum[i] = dg.Val[i] + addend.Val[i]
 	}
 	return &DiagonalMatrix{
-		Length: dg.Length,
-		Val:    sum,
+		Length:    dg.Length,
+		Val:       sum,
+		Direction: dg.Direction,
 	}
 }
 
@@ -37,17 +38,16 @@ func (dg *DiagonalMatrix) ToGrid() *Grid {
 	return grid
 }
 
-func (dg *DiagonalMatrix) PrettyPrint() {
+func (dg *DiagonalMatrix) PrettyPrint() string {
 	var mark string
-	if dg.Direction == true {
-		mark = " -> "
+	if dg.Direction {
+		mark = " ↗ "
 	} else {
-		mark = " <- "
+		mark = " ↘ "
 	}
 	var str string
 	for _, element := range dg.Val {
-		fmt.Sprint(str, element, mark)
-
+		str = fmt.Sprint(str, element, mark)
 	}
-
+	return str
 }

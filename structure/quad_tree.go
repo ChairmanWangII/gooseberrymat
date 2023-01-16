@@ -156,28 +156,27 @@ func (qt *QuadTree) Transpose() *QuadTree {
 // Return the list of children.
 func (qt *QuadTreeNode) Children() []*QuadTreeNode {
 	var res []*QuadTreeNode
-	res = append(res, qt.TopLeft)
-	res = append(res, qt.TopRight)
-	res = append(res, qt.BottomLeft)
-	res = append(res, qt.BottomRight)
+	leaves := []*QuadTreeNode{qt.TopLeft, qt.TopRight, qt.BottomLeft, qt.BottomRight}
+	for _, leaf := range leaves {
+		if leaf != nil {
+			res = append(res, leaf)
+		}
+	}
 	return res
 }
 
-func (qt *QuadTree) PrettyPrint() string {
-	return Sprint(qt.Root)
-}
-
 // Returns the horizontal formatted tree.
-func Sprint(root *QuadTreeNode) (s string) {
-	for _, line := range lines(root) {
-		// ignore runes before root node
+func (qt *QuadTree) PrettyPrint() string {
+	var str string
+	for _, line := range split(qt.Root) {
+		// Ignore runes before root node.
 		line = string([]rune(line)[2:])
-		s += strings.TrimRight(line, " ") + "\n"
+		str += strings.TrimRight(line, " ") + "\n"
 	}
-	return
+	return str
 }
 
-func lines(root *QuadTreeNode) (s []string) {
+func split(root *QuadTreeNode) (s []string) {
 	data := fmt.Sprintf("%s %v ", BoxHor, root.Val)
 	l := len(root.Children())
 	if l == 0 {
@@ -187,7 +186,7 @@ func lines(root *QuadTreeNode) (s []string) {
 
 	w := utf8.RuneCountInString(data)
 	for i, c := range root.Children() {
-		for j, line := range lines(c) {
+		for j, line := range split(c) {
 			if i == 0 && j == 0 {
 				if l == 1 {
 					s = append(s, data+BoxHor+line)

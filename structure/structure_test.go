@@ -5,37 +5,39 @@ import (
 	"testing"
 )
 
-func TestQuadTreeConstructor(t *testing.T) {
-	testGrid := [][]int{
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
+func getTestGrid() [][]int {
+	return [][]int{
+		{1, 1, 2, 2, 0, 0, 0, 0},
+		{1, 1, 2, 2, 0, 0, 0, 0},
+		{1, 1, 1, 1, 3, 3, 1, 1},
+		{1, 1, 1, 1, 3, 3, 1, 1},
+		{1, 1, 1, 1, 5, 5, 0, 0},
+		{1, 1, 1, 1, 5, 5, 0, 0},
 		{1, 1, 1, 1, 0, 0, 0, 0},
 		{1, 1, 1, 1, 0, 0, 0, 0},
 	}
+}
+
+func getTestDiagonal() *DiagonalMatrix {
+	return &DiagonalMatrix{
+		Length:    5,
+		Val:       []int{1, 3, 5, 8, 1},
+		Direction: true,
+	}
+}
+
+func TestQuadTreeConstructor(t *testing.T) {
 	gd := &Grid{
-		Val: testGrid,
+		Val: getTestGrid(),
 	}
 	qt := gd.ToQuadTree()
 	t.Log(qt)
+	fmt.Println(qt)
 }
 
 func TestParseToGrid(t *testing.T) {
-	testGrid := [][]int{
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-	}
 	gd := &Grid{
-		Val: testGrid,
+		Val: getTestGrid(),
 	}
 	qt := gd.ToQuadTree()
 	gd = qt.ToGrid()
@@ -43,18 +45,8 @@ func TestParseToGrid(t *testing.T) {
 }
 
 func TestTransposeQuadTree(t *testing.T) {
-	testGrid := [][]int{
-		{1, 1, 2, 2, 0, 0, 0, 0},
-		{1, 1, 2, 2, 0, 0, 0, 0},
-		{1, 1, 1, 1, 3, 3, 1, 1},
-		{1, 1, 1, 1, 3, 3, 1, 1},
-		{1, 1, 1, 1, 5, 5, 0, 0},
-		{1, 1, 1, 1, 5, 5, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-	}
 	gd := &Grid{
-		Val: testGrid,
+		Val: getTestGrid(),
 	}
 	t.Log("print origin matrix")
 	t.Log("---------------")
@@ -70,7 +62,7 @@ func TestTransposeQuadTree(t *testing.T) {
 	t.Log(res.Val)
 	t.Log("print transposed matrix")
 	t.Log("---------------")
-	t.Log(testGrid)
+	t.Log(getTestGrid())
 }
 
 func TestTrigramTidy(t *testing.T) {
@@ -107,22 +99,19 @@ func TestNilType(t *testing.T) {
 }
 
 func TestQuadTreePrettyPrint(t *testing.T) {
-	testGrid := [][]int{
-		{1, 1, 2, 2, 0, 0, 0, 0},
-		{1, 1, 2, 2, 0, 0, 0, 0},
-		{1, 1, 1, 1, 3, 3, 1, 1},
-		{1, 1, 1, 1, 3, 3, 1, 1},
-		{1, 1, 1, 1, 5, 5, 0, 0},
-		{1, 1, 1, 1, 5, 5, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 0, 0, 0, 0},
-	}
 	gd := &Grid{
-		Val:    testGrid,
+		Val:    getTestGrid(),
 		Width:  8,
 		Height: 8,
 	}
 	tg := gd.ToQuadTree()
 	str := tg.PrettyPrint()
 	t.Log(str)
+	fmt.Println(str)
+}
+
+func TestDiagonalPrettyPrint(t *testing.T) {
+	str := getTestDiagonal().PrettyPrint()
+	t.Log(str)
+	fmt.Println(str)
 }
