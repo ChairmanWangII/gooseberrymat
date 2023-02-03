@@ -9,9 +9,8 @@ import (
 // TODO need test.
 func Stressen(gd, mul *st.Grid) *st.Grid {
 	res := &st.Grid{
-		Width:  mul.Width,
-		Height: gd.Height,
-		Val:    st.Init2dSlice(mul.Width, gd.Height),
+		Shape: gd.Shape,
+		Val:   st.Init2dSlice(mul.Shape.Length, gd.Shape.Height),
 	}
 
 	var strassenAlgorithm func(a, b [][]int) [][]int

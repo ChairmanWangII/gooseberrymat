@@ -8,10 +8,9 @@ import (
 
 // Trigram is the only indefinite length structure, so we need calculate its Length.
 type Trigram struct {
-	Width  int
-	Height int
-	Length int
-	Val    []*TrigramNode
+	Shape   *Shape
+	NotNull int
+	Val     []*TrigramNode
 }
 
 type TrigramNode struct {
@@ -21,11 +20,10 @@ type TrigramNode struct {
 }
 
 func (tg *Trigram) ToGrid() *Grid {
-	val := Init2dSlice(tg.Width, tg.Height)
+	val := Init2dSlice(tg.Shape.Length, tg.Shape.Height)
 	grid := &Grid{
-		Width:  tg.Width,
-		Height: tg.Height,
-		Val:    val,
+		Shape: tg.Shape,
+		Val:   val,
 	}
 	for _, v := range tg.Val {
 		grid.Val[v.Row][v.Col] = v.Val
@@ -55,9 +53,11 @@ func (tg *Trigram) tidy() *Trigram {
 // This function is used to test.
 func (tg *Trigram) From2dSliceToTrigram(matrix [][]int) *Trigram {
 	tr := &Trigram{
-		Val:    make([]*TrigramNode, 0),
-		Width:  len(matrix[0]),
-		Height: len(matrix),
+		Val: make([]*TrigramNode, 0),
+		Shape: &Shape{
+			Length: len(matrix[0]),
+			Height: len(matrix),
+		},
 	}
 	for i, line := range matrix {
 		for j := range line {
@@ -81,11 +81,10 @@ func (tg *Trigram) Add(addend *Trigram) *Trigram {
 	tg.tidy()
 	addend.tidy()
 	res := &Trigram{
-		Width:  tg.Width,
-		Height: tg.Height,
-		Val:    make([]*TrigramNode, 0),
+		Shape: tg.Shape,
+		Val:   make([]*TrigramNode, 0),
 	}
-	leftLen, rightLen := tg.Length, addend.Length
+	leftLen, rightLen := tg.NotNull, addend.NotNull
 	l, r := 0, 0
 	for (leftLen-l-1)*(rightLen-r-1) != 0 {
 		if tg.Val[l].Col == addend.Val[r].Col && tg.Val[l].Row == addend.Val[r].Row {

@@ -3,19 +3,19 @@ package structure
 import "fmt"
 
 type DiagonalMatrix struct {
-	Length    int
+	Shape     *Shape
 	Val       []int
 	Direction bool // If the diagonal matrix is left-top to right-bottom, the direction is TRUE.
 }
 
 // TODO now this function can only add dianonal matrixes with same direction.
 func (dg *DiagonalMatrix) Add(addend *DiagonalMatrix) *DiagonalMatrix {
-	sum := make([]int, dg.Length)
+	sum := make([]int, dg.Shape.Length)
 	for i := range sum {
 		sum[i] = dg.Val[i] + addend.Val[i]
 	}
 	return &DiagonalMatrix{
-		Length:    dg.Length,
+		Shape:     dg.Shape,
 		Val:       sum,
 		Direction: dg.Direction,
 	}
@@ -28,11 +28,10 @@ func (dg *DiagonalMatrix) Transpose() *DiagonalMatrix {
 
 func (dg *DiagonalMatrix) ToGrid() *Grid {
 	grid := &Grid{
-		Val:    Init2dSlice(dg.Length, dg.Length),
-		Width:  dg.Length,
-		Height: dg.Length,
+		Val:   Init2dSlice(dg.Shape.Length, dg.Shape.Length),
+		Shape: dg.Shape,
 	}
-	for i := 0; i < dg.Length; i++ {
+	for i := 0; i < dg.Shape.Length; i++ {
 		grid.Val[i][i] = dg.Val[i]
 	}
 	return grid

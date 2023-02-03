@@ -16,7 +16,7 @@ func BaseMultiply(multiplier, multiplicand *MatrixType) *MatrixType {
 	if multiplier.Dg != nil && multiplicand.Dg != nil {
 		// Two diagonal matrixes have different direction.
 		if multiplier.Dg.Direction != multiplicand.Dg.Direction {
-			length := multiplier.Dg.Length
+			length := multiplier.Dg.Shape.Length
 			if length%2 == 0 {
 				val := st.Init2dSlice(length, length)
 				val[length/2][length/2] = multiplier.Dg.Val[length/2] * multiplicand.Dg.Val[length/2]
@@ -32,7 +32,7 @@ func BaseMultiply(multiplier, multiplicand *MatrixType) *MatrixType {
 			}
 			// Two diagonal matrixes have same direction.
 		} else {
-			res := make([]int, multiplier.Dg.Length)
+			res := make([]int, multiplier.Dg.Shape.Length)
 			for i := range res {
 				res[i] = multiplier.Dg.Val[i] * multiplicand.Dg.Val[i]
 			}
@@ -58,9 +58,8 @@ func BaseMultiply(multiplier, multiplicand *MatrixType) *MatrixType {
 
 func SimpleMultiply(gd, mul *st.Grid) *st.Grid {
 	res := &st.Grid{
-		Width:  mul.Width,
-		Height: gd.Height,
-		Val:    st.BaseMultiply(gd.Val, mul.Val),
+		Shape: gd.Shape,
+		Val:   st.BaseMultiply(gd.Val, mul.Val),
 	}
 	return res
 }

@@ -1,19 +1,17 @@
 package structure
 
 type Grid struct {
-	Width  int
-	Height int
-	Val    [][]int
+	Shape *Shape
+	Val   [][]int
 }
 
 func (gd *Grid) Add(addend *Grid) *Grid {
 	res := &Grid{
-		Width:  gd.Width,
-		Height: gd.Height,
-		Val:    gd.Val,
+		Shape: gd.Shape,
+		Val:   gd.Val,
 	}
-	for i := 0; i < gd.Height; i++ {
-		for j := 0; j < gd.Width; j++ {
+	for i := 0; i < gd.Shape.Height; i++ {
+		for j := 0; j < gd.Shape.Length; j++ {
 			res.Val[i][j] += addend.Val[i][j]
 		}
 	}
@@ -21,8 +19,8 @@ func (gd *Grid) Add(addend *Grid) *Grid {
 }
 
 func (gd *Grid) Transpose() *Grid {
-	height, width := gd.Height, gd.Width
-	tGrid := make([][]int, width)
+	height, length := gd.Shape.Height, gd.Shape.Length
+	tGrid := make([][]int, length)
 	for i := range tGrid {
 		tGrid[i] = make([]int, height)
 		for j := range tGrid[i] {
@@ -35,16 +33,15 @@ func (gd *Grid) Transpose() *Grid {
 		}
 	}
 	return &Grid{
-		Height: gd.Width,
-		Width:  gd.Height,
-		Val:    tGrid,
+		Shape: gd.Shape,
+		Val:   tGrid,
 	}
 }
 
 // Though I don't know what to do...
 func (gd *Grid) IsToeplitzMatrix() bool {
-	for i := 1; i < gd.Height; i++ {
-		for j := 1; j < gd.Width; j++ {
+	for i := 1; i < gd.Shape.Height; i++ {
+		for j := 1; j < gd.Shape.Length; j++ {
 			if gd.Val[i][j] != gd.Val[i-1][j-1] {
 				return false
 			}
@@ -54,7 +51,7 @@ func (gd *Grid) IsToeplitzMatrix() bool {
 }
 
 func (gd *Grid) IsDiagonal() bool {
-	if gd.Height != gd.Width {
+	if gd.Shape.Height != gd.Shape.Length {
 		return false
 	}
 	for i, line := range gd.Val {
@@ -68,10 +65,10 @@ func (gd *Grid) IsDiagonal() bool {
 }
 
 func (gd *Grid) IsQuadrable() bool {
-	if gd.Width != gd.Height {
+	if gd.Shape.Height != gd.Shape.Length {
 		return false
 	}
-	if gd.Width^(gd.Width-1) != 0 {
+	if gd.Shape.Length^(gd.Shape.Length-1) != 0 {
 		return false
 	}
 	return true
@@ -79,7 +76,7 @@ func (gd *Grid) IsQuadrable() bool {
 
 // Judge if two matrixes are cophenetic.
 func (gd *Grid) IsCophenetic(grid *Grid) bool {
-	if gd.Height == grid.Height && gd.Width == grid.Width {
+	if gd.Shape.Height == grid.Shape.Height && gd.Shape.Length == grid.Shape.Length {
 		return true
 	}
 	return false
@@ -87,14 +84,13 @@ func (gd *Grid) IsCophenetic(grid *Grid) bool {
 
 func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
 	orth := &OrthogonalLinkedList{
-		Width:   gd.Width,
-		Height:  gd.Height,
+		Shape:   gd.Shape,
 		NotNull: 0,
-		Col:     make([]*OrthogonalLinkedNode, gd.Height),
-		Row:     make([]*OrthogonalLinkedNode, gd.Width),
+		Col:     make([]*OrthogonalLinkedNode, gd.Shape.Height),
+		Row:     make([]*OrthogonalLinkedNode, gd.Shape.Length),
 	}
 
-	downList := make([]*OrthogonalLinkedNode, orth.Width)
+	downList := make([]*OrthogonalLinkedNode, orth.Shape.Length)
 	for i, line := range gd.Val {
 		head := orth.Col[i]
 		for j := range line {
@@ -147,18 +143,18 @@ func (gd *Grid) ToQuadTree() *QuadTree {
 		return &QuadTreeNode{Val: grid[0][leftBound], IsLeaf: true}
 	}
 	return &QuadTree{
-		Root:   dfs(gd.Val, 0, len(gd.Val)),
-		Length: len(gd.Val),
+		Root:  dfs(gd.Val, 0, len(gd.Val)),
+		Shape: gd.Shape,
 	}
 }
 
 // It is a bad idea to use 'Constructor' in Go
 func (gd *Grid) ToDiag() *DiagonalMatrix {
 	dm := &DiagonalMatrix{
-		Length: gd.Height,
-		Val:    make([]int, gd.Height),
+		Shape: gd.Shape,
+		Val:   make([]int, gd.Shape.Height),
 	}
-	for i := 0; i < dm.Length; i++ {
+	for i := 0; i < dm.Shape.Length; i++ {
 		dm.Val[i] = gd.Val[i][i]
 	}
 	return dm
@@ -166,8 +162,7 @@ func (gd *Grid) ToDiag() *DiagonalMatrix {
 
 func (gd *Grid) ToTrigram() *Trigram {
 	tg := &Trigram{
-		Width:  gd.Width,
-		Height: gd.Height,
+		Shape: gd.Shape,
 	}
 	for i, line := range gd.Val {
 		for j, v := range line {
@@ -178,6 +173,5 @@ func (gd *Grid) ToTrigram() *Trigram {
 			})
 		}
 	}
-	tg.Length = len(gd.Val)
 	return tg
 }

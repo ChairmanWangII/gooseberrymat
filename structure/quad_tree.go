@@ -10,8 +10,8 @@ import (
 // whose width equals to height and length is an exponential multiple of two.
 // Especially for those matrixes has lots of same data.
 type QuadTree struct {
-	Root   *QuadTreeNode
-	Length int
+	Root  *QuadTreeNode
+	Shape *Shape
 }
 
 const (
@@ -36,15 +36,15 @@ type QuadTreeNode struct {
 }
 
 func (qt *QuadTree) Width() int {
-	return qt.Length
+	return qt.Shape.Length
 }
 
 func (qt *QuadTree) Height() int {
-	return qt.Length
+	return qt.Shape.Length
 }
 
 func (qt *QuadTree) ToGrid() *Grid {
-	length := qt.Length
+	length := qt.Shape.Length
 	grid := make([][]int, length)
 	for i := range grid {
 		grid[i] = make([]int, length)
@@ -73,9 +73,8 @@ func (qt *QuadTree) ToGrid() *Grid {
 	}
 	dfs(qt.Root, 0, length-1, 0, length-1)
 	return &Grid{
-		Val:    grid,
-		Height: length,
-		Width:  length,
+		Val:   grid,
+		Shape: qt.Shape,
 	}
 }
 
@@ -129,8 +128,8 @@ func (qt *QuadTree) Add(addend *QuadTree) *QuadTree {
 		}
 	}
 	return &QuadTree{
-		Root:   nodeAdd(qt.Root, addend.Root),
-		Length: qt.Length,
+		Root:  nodeAdd(qt.Root, addend.Root),
+		Shape: qt.Shape,
 	}
 }
 
@@ -148,8 +147,8 @@ func (qt *QuadTree) Transpose() *QuadTree {
 		return qtn
 	}
 	return &QuadTree{
-		Length: qt.Length,
-		Root:   dfs(qt.Root),
+		Shape: qt.Shape,
+		Root:  dfs(qt.Root),
 	}
 }
 

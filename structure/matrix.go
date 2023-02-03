@@ -5,3 +5,8 @@ type Matrix struct {
 	DataStructure interface{}
 	SparsityRate  float64
 }
+
+type Shape struct {
+	Height int
+	Length int
+}

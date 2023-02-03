@@ -20,7 +20,10 @@ func getTestGrid() [][]int {
 
 func getTestDiagonal() *DiagonalMatrix {
 	return &DiagonalMatrix{
-		Length:    5,
+		Shape: &Shape{
+			Length: 5,
+			Height: 5,
+		},
 		Val:       []int{1, 3, 5, 8, 1},
 		Direction: true,
 	}
@@ -33,9 +36,11 @@ func getTestTrigram() *Trigram {
 	tn4 := &TrigramNode{Row: 4, Col: 4, Val: 1}
 	tn5 := &TrigramNode{Row: 4, Col: 5, Val: 7}
 	return &Trigram{
-		Width:  5,
-		Height: 5,
-		Length: 5,
+		Shape: &Shape{
+			Height: 5,
+			Length: 5,
+		},
+		NotNull: 5,
 		Val: []*TrigramNode{
 			tn1, tn2, tn3, tn4, tn5,
 		},
@@ -107,7 +112,9 @@ func Test2dSlice(t *testing.T) {
 }
 func TestNilType(t *testing.T) {
 	testGrid := &Grid{
-		Height: 12,
+		Shape: &Shape{
+			Height: 12,
+		},
 	}
 	if testGrid.Val == nil {
 		fmt.Println("approve")
@@ -116,9 +123,11 @@ func TestNilType(t *testing.T) {
 
 func TestQuadTreePrettyPrint(t *testing.T) {
 	gd := &Grid{
-		Val:    getTestGrid(),
-		Width:  8,
-		Height: 8,
+		Val: getTestGrid(),
+		Shape: &Shape{
+			Length: 8,
+			Height: 8,
+		},
 	}
 	tg := gd.ToQuadTree()
 	str := tg.PrettyPrint()
