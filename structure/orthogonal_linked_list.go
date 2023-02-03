@@ -5,8 +5,7 @@ import "gooseberrymat/utils"
 // Orthogonal linked list is a data structure
 // based on linked list to store sparse matrix.
 type OrthogonalLinkedList struct {
-	Width   int
-	Height  int
+	Shape   *Shape
 	NotNull int
 	Col     []*OrthogonalLinkedNode
 	Row     []*OrthogonalLinkedNode
@@ -21,7 +20,7 @@ type OrthogonalLinkedNode struct {
 }
 
 func (ol *OrthogonalLinkedList) ToGrid() *Grid {
-	matrix := Init2dSlice(ol.Width, ol.Height)
+	matrix := Init2dSlice(ol.Shape.Length, ol.Shape.Height)
 	for _, line := range ol.Col {
 		for line != nil {
 			matrix[line.Col][line.Row] = line.Val
@@ -29,9 +28,8 @@ func (ol *OrthogonalLinkedList) ToGrid() *Grid {
 		}
 	}
 	return &Grid{
-		Val:    matrix,
-		Height: ol.Height,
-		Width:  ol.Width,
+		Val:   matrix,
+		Shape: ol.Shape,
 	}
 }
 
@@ -90,7 +88,7 @@ func (ol *OrthogonalLinkedList) Add(tn *TrigramNode) {
 func (ol *OrthogonalLinkedList) PrettyPrint() string {
 	// To pprint othogonal linked list, we need to know the width
 	// of every element.
-	widthList := make([]int, ol.Width)
+	widthList := make([]int, ol.Shape.Length)
 	for _, i := range ol.Col {
 		if utils.GetDigits(i.Val) > widthList[i.Col] {
 			widthList[i.Col] = utils.GetDigits(i.Val)
