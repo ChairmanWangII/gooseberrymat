@@ -34,7 +34,7 @@ func (ol *OrthogonalLinkedList) ToGrid() *Grid {
 }
 
 // TODO need test
-func (ol *OrthogonalLinkedList) Add(tn *TrigramNode) {
+func (ol *OrthogonalLinkedList) Append(tn *TrigramNode) {
 	oln := &OrthogonalLinkedNode{
 		Val:       tn.Val,
 		Col:       tn.Col,
@@ -42,10 +42,10 @@ func (ol *OrthogonalLinkedList) Add(tn *TrigramNode) {
 		DownNode:  nil,
 		RightNode: nil,
 	}
+	// If unadded node is the only node.
 	if ol.Col[tn.Col] == nil {
 		ol.Col[tn.Col] = oln
 	} else {
-		// If unadded node is the head node.
 		head := ol.Col[tn.Col]
 		if head.Val > tn.Val {
 			ol.Col[tn.Col] = oln
@@ -65,7 +65,6 @@ func (ol *OrthogonalLinkedList) Add(tn *TrigramNode) {
 	if ol.Row[tn.Row] == nil {
 		ol.Row[tn.Row] = oln
 	} else {
-		// If unadded node is the head node.
 		head := ol.Row[tn.Row]
 		if head.Val > tn.Val {
 			ol.Row[tn.Row] = oln
@@ -80,6 +79,24 @@ func (ol *OrthogonalLinkedList) Add(tn *TrigramNode) {
 			} else {
 				head.DownNode, oln.DownNode = oln, head.DownNode
 			}
+		}
+	}
+}
+
+// TODO untest function, and I'm not sure if the iterate direction right or not.
+func (ol *OrthogonalLinkedList) Transpose() {
+	ol.Col, ol.Row = ol.Row, ol.Col
+	for _, node := range ol.Col {
+		for node != nil {
+			node.DownNode, node.RightNode = node.RightNode, node.DownNode
+			node.Col, node.Row = node.Row, node.Col
+			node = node.RightNode
+		}
+	}
+	for _, node := range ol.Row {
+		for node != nil {
+			node.DownNode, node.RightNode = node.RightNode, node.DownNode
+			node = node.DownNode
 		}
 	}
 }
