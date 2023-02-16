@@ -1,6 +1,10 @@
 package structure
 
-import "gooseberrymat/utils"
+import (
+	"gooseberrymat/utils"
+
+	"github.com/gdamore/tcell/v2"
+)
 
 // Orthogonal linked list is a data structure
 // based on linked list to store sparse matrix.
@@ -103,6 +107,21 @@ func (ol *OrthogonalLinkedList) Transpose() {
 
 // TODO
 func (ol *OrthogonalLinkedList) PrettyPrint() string {
+	// Init a tcell screen to print.
+	s, err := tcell.NewScreen()
+	if err != nil {
+		return ""
+	}
+	if err := s.Init(); err != nil {
+		return ""
+	}
+
+	// Set default text style
+	defStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorReset)
+	s.SetStyle(defStyle)
+
+	// Clear screen
+	s.Clear()
 	// To pprint othogonal linked list, we need to know the width
 	// of every element.
 	widthList := make([]int, ol.Shape.Length)

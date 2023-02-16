@@ -145,3 +145,6 @@ func TestTrigramPerttyPrint(t *testing.T) {
 	str := getTestTrigram().PrettyPrint()
 	fmt.Println(str)
 }
+
+func TestUsingTcell(t *testing.T) {
+}
