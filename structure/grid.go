@@ -1,5 +1,9 @@
 package structure
 
+import (
+	"fmt"
+)
+
 type Grid struct {
 	Shape *Shape
 	Val   [][]int
@@ -174,4 +178,16 @@ func (gd *Grid) ToTrigram() *Trigram {
 		}
 	}
 	return tg
+}
+
+func (gd *Grid) print() string {
+	s := ""
+
+	for i := range gd.Val {
+		for _, n := range gd.Val[i] {
+			s += fmt.Sprintf("%d", n)
+		}
+		s += "/n"
+	}
+	return s
 }

@@ -1,10 +1,6 @@
 package structure
 
-import (
-	"gooseberrymat/utils"
-
-	"github.com/gdamore/tcell/v2"
-)
+import "gooseberrymat/utils"
 
 // Orthogonal linked list is a data structure
 // based on linked list to store sparse matrix.
@@ -107,28 +103,53 @@ func (ol *OrthogonalLinkedList) Transpose() {
 
 // TODO
 func (ol *OrthogonalLinkedList) PrettyPrint() string {
-	// Init a tcell screen to print.
-	s, err := tcell.NewScreen()
-	if err != nil {
-		return ""
+	// If the matrix is too big, it is useless to prettyprint the structure.
+	if ol.Shape.Height > 9 || ol.Shape.Length > 9 {
+		return ol.ToGrid().print()
 	}
-	if err := s.Init(); err != nil {
-		return ""
-	}
-
-	// Set default text style
-	defStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorReset)
-	s.SetStyle(defStyle)
-
-	// Clear screen
-	s.Clear()
+	// Init a proper canvas for orthogonal linked list.
+	height := ol.Shape.Height*2 + 1
 	// To pprint othogonal linked list, we need to know the width
 	// of every element.
-	widthList := make([]int, ol.Shape.Length)
-	for _, i := range ol.Col {
-		if utils.GetDigits(i.Val) > widthList[i.Col] {
-			widthList[i.Col] = utils.GetDigits(i.Val)
+	lengthList := make([]int, ol.Shape.Length)
+	for i := range lengthList {
+		if i < 9 {
+			lengthList[i] = 2
+		} else {
+			lengthList[i] = 3
 		}
+	}
+	for _, node := range ol.Col {
+		for node != nil {
+			digitalLength := 1
+			value := node.Val
+			for value != 0 {
+				value /= 10
+				digitalLength++
+			}
+			if digitalLength > lengthList[node.Col] {
+				lengthList[node.Col] = digitalLength
+			}
+			node = node.DownNode
+		}
+	}
+	positionList := make([]int, ol.Shape.Length)
+	positionList[0] = lengthList[0]
+	for i := range positionList[1:] {
+		positionList[i] = lengthList[i-1] + lengthList[i]
+	}
+	canvas := make([][]rune, height)
+	for i := range canvas {
+		canvas[i] = make([]rune, positionList[ol.Shape.Length-1])
+	}
+
+	for i := range canvas[1][2:] {
+		canvas[1][i] = utils.BoxHor
+	}
+	canvas[1][1] = utils.BoxDownRight
+
+	for i := 2; i < ol.Shape.Height; i++ {
+		canvas[i][1] = utils.BoxVer
 	}
 
 	return ""
