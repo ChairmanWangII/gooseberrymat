@@ -148,3 +148,16 @@ func TestTrigramPerttyPrint(t *testing.T) {
 
 func TestUsingTcell(t *testing.T) {
 }
+
+func TestGridPrint(t *testing.T) {
+	gd := &Grid{
+		Val: getTestGrid(),
+		Shape: &Shape{
+			Length: 8,
+			Height: 8,
+		},
+	}
+	gd.Val[5][5] = 17
+	fmt.Println(gd.print())
+
+}

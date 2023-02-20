@@ -1,6 +1,10 @@
 package utils
 
 func GetDigits(num int) int {
-	str := string(rune(num))
-	return len(str)
+	count := 1
+	for num > 9 {
+		count++
+		num /= 10
+	}
+	return count
 }

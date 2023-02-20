@@ -2,6 +2,7 @@ package structure
 
 import (
 	"fmt"
+	"gooseberrymat/utils"
 )
 
 type Grid struct {
@@ -180,14 +181,32 @@ func (gd *Grid) ToTrigram() *Trigram {
 	return tg
 }
 
+// Print the grid.
+// Automatically print 0 as null and align the different digit length.
 func (gd *Grid) print() string {
-	s := ""
-
-	for i := range gd.Val {
-		for _, n := range gd.Val[i] {
-			s += fmt.Sprintf("%d", n)
+	widthList := make([]int, gd.Shape.Length)
+	for _, line := range gd.Val {
+		for j, v := range line {
+			if utils.GetDigits(v) > widthList[j] {
+				widthList[j] = utils.GetDigits(v)
+			}
 		}
-		s += "/n"
+	}
+	s := ""
+	for i := range gd.Val {
+		for j, n := range gd.Val[i] {
+			if n == 0 {
+				s += " "
+			} else {
+				s += fmt.Sprintf("%d", n)
+			}
+			blanks := widthList[j] - utils.GetDigits(n) + 1
+			for blanks > 0 {
+				s += " "
+				blanks--
+			}
+		}
+		s += "\n"
 	}
 	return s
 }
