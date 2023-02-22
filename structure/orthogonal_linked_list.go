@@ -1,6 +1,8 @@
 package structure
 
-import "gooseberrymat/utils"
+import (
+	"gooseberrymat/utils"
+)
 
 // Orthogonal linked list is a data structure
 // based on linked list to store sparse matrix.
@@ -103,7 +105,8 @@ func (ol *OrthogonalLinkedList) Transpose() {
 
 // TODO
 func (ol *OrthogonalLinkedList) PrettyPrint() string {
-	// If the matrix is too big, it is useless to prettyprint the structure.
+	// If the matrix is too big(over 9 on height or length),
+	// it is too big to read easily.
 	if ol.Shape.Height > 9 || ol.Shape.Length > 9 {
 		return ol.ToGrid().print()
 	}
@@ -152,5 +155,14 @@ func (ol *OrthogonalLinkedList) PrettyPrint() string {
 		canvas[i][1] = utils.BoxVer
 	}
 
-	return ""
+	res := ""
+	for _, line := range canvas {
+		str := ""
+		for _, v := range line {
+			str = string(v)
+		}
+		res += str
+		res += "\n"
+	}
+	return res
 }

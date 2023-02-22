@@ -187,8 +187,8 @@ func (gd *Grid) print() string {
 	widthList := make([]int, gd.Shape.Length)
 	for _, line := range gd.Val {
 		for j, v := range line {
-			if utils.GetDigits(v) > widthList[j] {
-				widthList[j] = utils.GetDigits(v)
+			if utils.GetDigitLength(v) > widthList[j] {
+				widthList[j] = utils.GetDigitLength(v)
 			}
 		}
 	}
@@ -200,7 +200,7 @@ func (gd *Grid) print() string {
 			} else {
 				s += fmt.Sprintf("%d", n)
 			}
-			blanks := widthList[j] - utils.GetDigits(n) + 1
+			blanks := widthList[j] - utils.GetDigitLength(n) + 1
 			for blanks > 0 {
 				s += " "
 				blanks--

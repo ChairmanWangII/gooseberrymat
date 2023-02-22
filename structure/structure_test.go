@@ -161,3 +161,45 @@ func TestGridPrint(t *testing.T) {
 	fmt.Println(gd.print())
 
 }
+
+func TestOLLPrettyPrint(t *testing.T) {
+	ol := &OrthogonalLinkedList{
+		Shape: &Shape{
+			Height: 5,
+			Length: 5,
+		},
+		NotNull: 0,
+		Col:     make([]*OrthogonalLinkedNode, 5),
+		Row:     make([]*OrthogonalLinkedNode, 5),
+	}
+	ol.Append(&TrigramNode{
+		Row: 2,
+		Col: 3,
+		Val: 5,
+	})
+	ol.Append(&TrigramNode{
+		Row: 0,
+		Col: 0,
+		Val: 9,
+	})
+	ol.Append(&TrigramNode{
+		Row: 3,
+		Col: 2,
+		Val: 4,
+	})
+	ol.Append(&TrigramNode{
+		Row: 2,
+		Col: 2,
+		Val: 7,
+	})
+	ol.Append(&TrigramNode{
+		Row: 4,
+		Col: 4,
+		Val: 6,
+	})
+	grid := ol.ToGrid()
+	fmt.Println(grid.print())
+
+	str := ol.PrettyPrint()
+	fmt.Println(str)
+}
