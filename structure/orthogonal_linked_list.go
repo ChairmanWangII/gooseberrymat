@@ -1,16 +1,18 @@
 package structure
 
+// Orthogonal linked list is a data structure
+// based on linked list to store sparse matrix.
+
 import (
 	"gooseberrymat/utils"
 )
 
-// Orthogonal linked list is a data structure
-// based on linked list to store sparse matrix.
+// Oll use two slices as the head of linked lists.
 type OrthogonalLinkedList struct {
-	Shape   *Shape
-	NotNull int
-	Col     []*OrthogonalLinkedNode
-	Row     []*OrthogonalLinkedNode
+	Shape      *Shape
+	NotNull    int
+	Horizontal []*OrthogonalLinkedNode
+	Vertical   []*OrthogonalLinkedNode
 }
 
 type OrthogonalLinkedNode struct {
@@ -23,9 +25,11 @@ type OrthogonalLinkedNode struct {
 
 func (ol *OrthogonalLinkedList) ToGrid() *Grid {
 	matrix := Init2dSlice(ol.Shape.Length, ol.Shape.Height)
-	for _, line := range ol.Col {
+	for _, line := range ol.Vertical {
 		for line != nil {
-			matrix[line.Col][line.Row] = line.Val
+			if line.Val != 0 {
+				matrix[line.Row][line.Col] = line.Val
+			}
 			line = line.RightNode
 		}
 	}
@@ -35,7 +39,7 @@ func (ol *OrthogonalLinkedList) ToGrid() *Grid {
 	}
 }
 
-// TODO need test
+// Append new element to orthogonal linked list.
 func (ol *OrthogonalLinkedList) Append(tn *TrigramNode) {
 	oln := &OrthogonalLinkedNode{
 		Val:       tn.Val,
@@ -45,12 +49,12 @@ func (ol *OrthogonalLinkedList) Append(tn *TrigramNode) {
 		RightNode: nil,
 	}
 	// If unadded node is the only node.
-	if ol.Col[tn.Col] == nil {
-		ol.Col[tn.Col] = oln
+	if ol.Horizontal[tn.Col] == nil {
+		ol.Horizontal[tn.Col] = oln
 	} else {
-		head := ol.Col[tn.Col]
+		head := ol.Horizontal[tn.Col]
 		if head.Val > tn.Val {
-			ol.Col[tn.Col] = oln
+			ol.Horizontal[tn.Col] = oln
 			oln.RightNode = head
 		}
 		for head != nil {
@@ -64,12 +68,12 @@ func (ol *OrthogonalLinkedList) Append(tn *TrigramNode) {
 			}
 		}
 	}
-	if ol.Row[tn.Row] == nil {
-		ol.Row[tn.Row] = oln
+	if ol.Vertical[tn.Row] == nil {
+		ol.Vertical[tn.Row] = oln
 	} else {
-		head := ol.Row[tn.Row]
+		head := ol.Vertical[tn.Row]
 		if head.Val > tn.Val {
-			ol.Row[tn.Row] = oln
+			ol.Vertical[tn.Row] = oln
 			oln.DownNode = head
 		}
 		for head != nil {
@@ -83,24 +87,34 @@ func (ol *OrthogonalLinkedList) Append(tn *TrigramNode) {
 			}
 		}
 	}
+	ol.NotNull++
 }
 
 // TODO untest function, and I'm not sure if the iterate direction right or not.
-func (ol *OrthogonalLinkedList) Transpose() {
-	ol.Col, ol.Row = ol.Row, ol.Col
-	for _, node := range ol.Col {
+func (ol *OrthogonalLinkedList) Transpose() *OrthogonalLinkedList {
+	res := &OrthogonalLinkedList{
+		Shape: &Shape{
+			Height: ol.Shape.Length,
+			Length: ol.Shape.Height,
+		},
+		NotNull:    ol.NotNull,
+		Horizontal: ol.Vertical,
+		Vertical:   ol.Horizontal,
+	}
+	for _, node := range res.Horizontal {
 		for node != nil {
 			node.DownNode, node.RightNode = node.RightNode, node.DownNode
 			node.Col, node.Row = node.Row, node.Col
-			node = node.RightNode
-		}
-	}
-	for _, node := range ol.Row {
-		for node != nil {
-			node.DownNode, node.RightNode = node.RightNode, node.DownNode
 			node = node.DownNode
 		}
 	}
+	for _, node := range res.Vertical {
+		for node != nil {
+			node.DownNode, node.RightNode = node.RightNode, node.DownNode
+			node = node.RightNode
+		}
+	}
+	return res
 }
 
 // TODO
@@ -122,7 +136,7 @@ func (ol *OrthogonalLinkedList) PrettyPrint() string {
 			lengthList[i] = 3
 		}
 	}
-	for _, node := range ol.Col {
+	for _, node := range ol.Horizontal {
 		for node != nil {
 			digitalLength := 1
 			value := node.Val
@@ -139,6 +153,9 @@ func (ol *OrthogonalLinkedList) PrettyPrint() string {
 	positionList := make([]int, ol.Shape.Length)
 	positionList[0] = lengthList[0]
 	for i := range positionList[1:] {
+		if i == 0 {
+			continue
+		}
 		positionList[i] = lengthList[i-1] + lengthList[i]
 	}
 	canvas := make([][]rune, height)

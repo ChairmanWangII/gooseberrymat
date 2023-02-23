@@ -89,15 +89,15 @@ func (gd *Grid) IsCophenetic(grid *Grid) bool {
 
 func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
 	orth := &OrthogonalLinkedList{
-		Shape:   gd.Shape,
-		NotNull: 0,
-		Col:     make([]*OrthogonalLinkedNode, gd.Shape.Height),
-		Row:     make([]*OrthogonalLinkedNode, gd.Shape.Length),
+		Shape:      gd.Shape,
+		NotNull:    0,
+		Horizontal: make([]*OrthogonalLinkedNode, gd.Shape.Height),
+		Vertical:   make([]*OrthogonalLinkedNode, gd.Shape.Length),
 	}
 
 	downList := make([]*OrthogonalLinkedNode, orth.Shape.Length)
 	for i, line := range gd.Val {
-		head := orth.Col[i]
+		head := orth.Horizontal[i]
 		for j := range line {
 			if gd.Val[i][j] != 0 {
 				node := &OrthogonalLinkedNode{
@@ -113,8 +113,8 @@ func (gd *Grid) ToOrthgonal() *OrthogonalLinkedList {
 					head.RightNode = node
 					head = head.RightNode
 				}
-				if orth.Row[j] == nil {
-					orth.Row[j] = node
+				if orth.Vertical[j] == nil {
+					orth.Vertical[j] = node
 					downList[j] = node
 				} else {
 					downList[j].DownNode = node

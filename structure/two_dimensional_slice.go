@@ -1,9 +1,9 @@
 package structure
 
-func Init2dSlice(width, height int) [][]int {
+func Init2dSlice(length, height int) [][]int {
 	res := make([][]int, 0)
 	for i := 0; i < height; i++ {
-		res = append(res, make([]int, width))
+		res = append(res, make([]int, length))
 	}
 	return res
 }
