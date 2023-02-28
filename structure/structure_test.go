@@ -242,6 +242,11 @@ func TestOLLTranspose(t *testing.T) {
 	})
 	ol.Append(&TrigramNode{
 		Row: 4,
+		Col: 3,
+		Val: 8,
+	})
+	ol.Append(&TrigramNode{
+		Row: 4,
 		Col: 4,
 		Val: 6,
 	})
